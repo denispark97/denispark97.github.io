@@ -1,14 +1,25 @@
-<!-- <html>
+<html>
 <script src='https://d3js.org/d3.v5.min.js'></script>
-<style> circle {fill: lightblue; stroke: black;} </style>
+<script src="https://rawgit.com/susielu/d3-annotation/master/d3-annotation.min.js"></script>
+<button onclick="changeColor('blue')">Get blue</button>
+<button onclick="changeColor('red')">Get red</button>
+<button onclick="changeColor('reset')">Get reset</button>
+<style> circle {stroke: black;} </style>
 <body onload='init()'>
 <svg width=300 height=300>
 </svg>
 <script>
+
+
 async function init() {
+
 const data = await d3.csv('https://flunky.github.io/cars2017.csv', d3.autotype);
+
 var x = d3.scaleLog().domain([10,150]).range([0,200]);
 var y = d3.scaleLog().domain([10,150]).range([200,0]);
+var div = d3.select("body").append("div")	
+    .attr("class", "tooltip")				
+    .style("opacity", 0);
 
 d3.select('svg').append("g")
 .attr("transform", "translate(50,50)")
@@ -16,9 +27,25 @@ d3.select('svg').append("g")
 .data(data)
 .enter()
 .append("circle")
+.attr("id", "circleBasicTooltip")
 .attr("cx", function(d,i) {return x(d.AverageCityMPG);})
 .attr("cy", function(d,i) {return y(d.AverageHighwayMPG);})
 .attr("r", function(d,i) {return 2 + parseInt(d.EngineCylinders);})
+.attr("fill", "transparent")
+.on("mouseover", function(d) {
+    div.transition()	
+    	
+                .duration(200)		
+                .style("opacity", .9);		
+            div	.html(d.Make)	
+                .style("left", (d3.event.pageX) + "px")		
+                .style("top", (d3.event.pageY - 28) + "px");	
+})
+.on("mouseout", function(d) {		
+            div.transition()		
+                .duration(500)		
+                .style("opacity", 0);	
+        });
 
 
 d3.select('svg')
@@ -31,15 +58,56 @@ d3.select('svg')
 .append("g")
 .attr("transform", "translate(50,250)")
 .call(d3.axisBottom(x).tickValues([10, 20, 50, 100]).tickFormat(d3.format("~s")))
-}
-</script>
-</body>
-</html> -->
 
-<!DOCTYPE html>
-<html>
-<body>
-<h1>SCLC CDP</h1>
-<p>I'm hosted with James Seo the big cdp.</p>
+}
+
+  
+function changeColor(color){
+    //const data = d3.csv('https://flunky.github.io/cars2017.csv', d3.autotype);
+    if(color == "blue")
+    {
+        d3.selectAll("circle")
+        .transition()
+        .duration(2000)
+        .attr("fill", function(d,i) {
+            if (d.AverageCityMPG > 30)
+            {
+                return "yellow"
+            }
+        })
+    }
+    else if(color == "red")
+    {
+        d3.selectAll("circle")
+        .transition()
+        .duration(2000)
+        .attr("fill", function(d,i) {
+            if (d.AverageCityMPG < 30)
+            {
+                return "green"
+            }
+        })
+    }
+    else
+    {
+        d3.selectAll("circle")
+        .transition()
+        .duration(2000)
+        .attr("fill", function(d,i) {
+            if (d.AverageCityMPG < 30)
+            {
+                return "transparent"
+            }
+        })
+    }
+    
+
+    
+    //.style("fill", "red")
+}
+
+
+
+</script>
 </body>
 </html>
