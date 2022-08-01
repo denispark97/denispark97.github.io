@@ -1,19 +1,51 @@
 <html>
 <script src='https://d3js.org/d3.v5.min.js'></script>
 <script src="https://rawgit.com/susielu/d3-annotation/master/d3-annotation.min.js"></script>
-<button onclick="changeColor('blue')">Get blue</button>
-<button onclick="changeColor('red')">Get red</button>
+
+<h1 style="color: green;">Fuel Efficiency Continued</h1>
+    <div style="background-color: none; 
+              width: fit-content; 
+              padding: 10px; 
+              margin-top: 5px;" class="btn">
+        During class, we have looked into the fuel efficiency scatter plot using the "average data for automative manufacturers" dataset.
+        We will look into more details in this narrative visualization.
+    </div>
+<button onclick="changeColor('blue')">See only BMW</button>
+<button onclick="changeColor('red')">See only Chevrolet</button>
+<button onclick="changeColor('g')">See only Gasoline</button>
+<button onclick="changeColor('d')">See only Diesel</button>
+<button onclick="changeColor('e')">See only electricity</button>
 <button onclick="changeColor('reset')">Get reset</button>
+
 <style> circle {stroke: black;} </style>
 <body onload='init()'>
-<svg width=300 height=300>
+<svg width=550 height=550>
 </svg>
 <script>
 
-
 async function init() {
-
 const data = await d3.csv('https://flunky.github.io/cars2017.csv', d3.autotype);
+const annotations = [
+    {
+    note: {
+      label: "Average City MPG vs Average Highway MPG with radius as Engine Cylinders",
+      title: "All Car Brand and Fuel Type",
+      wrap: 200,
+      padding: 10 
+      
+    },
+    color: ["#cc0000"],
+    x: 100,
+    y: 200,
+    dy: 100,
+    dx: 100
+  }
+]
+
+const makeAnnotations = d3.annotation()
+  .annotations(annotations)
+d3.select('svg').append("g")
+  .call(makeAnnotations)
 
 var x = d3.scaleLog().domain([10,150]).range([0,200]);
 var y = d3.scaleLog().domain([10,150]).range([200,0]);
@@ -37,9 +69,9 @@ d3.select('svg').append("g")
     	
                 .duration(200)		
                 .style("opacity", .9);		
-            div	.html(d.Make)	
+            div	.html("Average City MPG: " + d.AverageCityMPG + "          Average Highway MPG: " + d.AverageHighwayMPG)	
                 .style("left", (d3.event.pageX) + "px")		
-                .style("top", (d3.event.pageY - 28) + "px");	
+                .style("top", (d3.event.pageY - 28) + "px");
 })
 .on("mouseout", function(d) {		
             div.transition()		
@@ -63,47 +95,271 @@ d3.select('svg')
 
   
 function changeColor(color){
-    //const data = d3.csv('https://flunky.github.io/cars2017.csv', d3.autotype);
-    if(color == "blue")
+    const annotations = [
     {
-        d3.selectAll("circle")
-        .transition()
-        .duration(2000)
-        .attr("fill", function(d,i) {
-            if (d.AverageCityMPG > 30)
-            {
-                return "yellow"
-            }
-        })
+    note: {
+      label: "The graph successfully shows only dataset of car brand BMW as yellow dots",
+      title: "BMW dots",
+      wrap: 200,
+      padding: 10 
+      
+    },
+    color: ["#cc0000"],
+    x: 100,
+    y: 200,
+    dy: 100,
+    dx: 100
     }
-    else if(color == "red")
-    {
-        d3.selectAll("circle")
-        .transition()
-        .duration(2000)
-        .attr("fill", function(d,i) {
-            if (d.AverageCityMPG < 30)
-            {
-                return "green"
-            }
-        })
-    }
-    else
-    {
-        d3.selectAll("circle")
-        .transition()
-        .duration(2000)
-        .attr("fill", function(d,i) {
-            if (d.AverageCityMPG < 30)
-            {
-                return "transparent"
-            }
-        })
-    }
-    
+  ]
 
-    
-    //.style("fill", "red")
+  const annotations2 = [
+    {
+    note: {
+      label: "The graph successfully shows only dataset of car brand Chevrolet as green dots",
+      title: "Chevrolet Dots",
+      wrap: 200,
+      padding: 10 
+      
+    },
+    color: ["#cc0000"],
+    x: 100,
+    y: 200,
+    dy: 100,
+    dx: 100
+    }
+  ]
+
+  const annotations3 = [
+    {
+    note: {
+      label: "The graph successfully shows only dataset of car fuel type Gasoline as green dots",
+      title: "Gasoline Dots",
+      wrap: 200,
+      padding: 10 
+      
+    },
+    color: ["#cc0000"],
+    x: 100,
+    y: 200,
+    dy: 100,
+    dx: 100
+    }
+  ]
+
+  const annotations4 = [
+    {
+    note: {
+      label: "The graph successfully shows only dataset of fuel type diesel as green dots",
+      title: "Diesel Dots",
+      wrap: 200,
+      padding: 10 
+      
+    },
+    color: ["#cc0000"],
+    x: 120,
+    y: 180,
+    dy: 100,
+    dx: 100
+    }
+  ]
+
+  const annotations5 = [
+    {
+    note: {
+      label: "The graph successfully shows only dataset of fuel type electricity as green dots",
+      title: "Electricity Dots",
+      wrap: 200,
+      padding: 10 
+      
+    },
+    color: ["#cc0000"],
+    x: 230,
+    y: 100,
+    dy: 100,
+    dx: 100
+    }
+  ]
+  
+  const makeAnnotations = d3.annotation()
+  .annotations(annotations)
+
+  const makeAnnotations2 = d3.annotation()
+  .annotations(annotations2)
+
+  const makeAnnotations3 = d3.annotation()
+  .annotations(annotations3)
+
+  const makeAnnotations4 = d3.annotation()
+  .annotations(annotations4)
+
+  const makeAnnotations5 = d3.annotation()
+  .annotations(annotations5)
+
+  d3.select(".annotations").remove()
+  if(color == "blue")
+  {
+    var chk = d3.selectAll(".btn")
+    .text("The graph filters out the dataset by brand BMW. Now lets see if the graph looks different if we filter out other car brands.");
+    var text = document.querySelector("button");
+
+    d3.select('svg').append("g")
+    .call(makeAnnotations)
+
+    d3.selectAll("circle")
+    .transition()
+    .duration(2000)
+    .attr("fill", function(d,i) {
+        if (d.Make == "BMW")
+        {
+            return "yellow"
+        }
+        else{
+          return "none"
+        }
+    })
+    .style("stroke", function(d,i) {
+      if (d.Make == "BMW")
+        {
+            return "black"
+        }
+        else{
+          return "transparent"
+        }
+      }
+        )
+  }
+  else if(color == "red")
+  {
+
+    var chk = d3.selectAll(".btn")
+    .text("Now the graph filters out the data by brand Chevrolet. You could see that the radius of the dots has become smaller, but the correlation looks pretty similar to the previous filtering.");
+    var text = document.querySelector("button");
+
+    d3.select('svg').append("g")
+      .call(makeAnnotations2)
+      d3.selectAll("circle")
+      .transition()
+      .duration(2000)
+      .attr("fill", function(d,i) {
+          if (d.Make == "Chevrolet")
+          {
+              return "green"
+          }
+          else{
+            return "transparent"
+          }
+      })
+      .style("stroke", function(d,i) {
+      if (d.Make == "Chevrolet")
+        {
+            return "black"
+        }
+        else{
+          return "transparent"
+        }
+      }
+        )
+  }
+  else if(color == "g")
+  {
+
+    var chk = d3.selectAll(".btn")
+    .text( "What if we filter by fuel types? Here is a graph with only Gasoline types on the chart.");
+    var text = document.querySelector("button");
+    d3.select('svg').append("g")
+      .call(makeAnnotations3)
+      d3.selectAll("circle")
+      .transition()
+      .duration(2000)
+      .attr("fill", function(d,i) {
+          if (d.Fuel == "Gasoline")
+          {
+              return "pink"
+          }
+          else{
+            return "transparent"
+          }
+      })
+      .style("stroke", function(d,i) {
+      if (d.Fuel == "Gasoline")
+        {
+            return "black"
+        }
+        else{
+          return "transparent"
+        }
+      }
+        )
+  }
+  else if(color == 'd')
+  {
+
+    var chk = d3.selectAll(".btn")
+    .text( "Now lets filter by only electric fuels. Notice that the data points are smaller in radius and has an increased x and y values compared to Gasoline.");
+    var text = document.querySelector("button");
+    d3.select('svg').append("g")
+      .call(makeAnnotations4)
+      d3.selectAll("circle")
+      .transition()
+      .duration(2000)
+      .attr("fill", function(d,i) {
+          if (d.Fuel == "Diesel")
+          {
+              return "violet"
+          }
+          else{
+            return "transparent"
+          }
+      })
+      .style("stroke", function(d,i) {
+      if (d.Fuel == "Diesel")
+        {
+            return "black"
+        }
+        else{
+          return "transparent"
+        }
+      }
+        )
+  }
+  else if(color == 'e')
+  {
+    var chk = d3.selectAll(".btn")
+    .text( "Here is a chart that is filterd by only electric fuels. Notice there is a huge difference from the past two fuels. The radius is much more smaller, and the datapoints are mostly plotted on the higher x/y values.");
+    var text = document.querySelector("button");
+    d3.select('svg').append("g")
+      .call(makeAnnotations5)
+      d3.selectAll("circle")
+      .transition()
+      .duration(2000)
+      .attr("fill", function(d,i) {
+          if (d.Fuel == "Electricity")
+          {
+              return "purple"
+          }
+          else{
+            return "transparent"
+          }
+      })
+      .style("stroke", function(d,i) {
+      if (d.Fuel == "Electricity")
+        {
+            return "black"
+        }
+        else{
+          return "transparent"
+        }
+      }
+        )
+  }
+  else
+  {
+      d3.selectAll("circle")
+      .transition()
+      .duration(2000)
+      .attr("fill", "transparent")
+      .style("stroke", "black")
+  }
 }
 
 
