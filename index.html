@@ -8,7 +8,7 @@
               padding: 10px; 
               margin-top: 5px;" class="btn">
         During class, we have looked into the fuel efficiency scatter plot using the "average data for automative manufacturers" dataset.
-        We will look into more details in this narrative visualization.
+        We will look into more details in this narrative visualization. Try hovering over each data points to see the exact x and y values!
     </div>
 <button onclick="changeColor('blue')">See only BMW</button>
 <button onclick="changeColor('red')">See only Chevrolet</button>
@@ -79,11 +79,20 @@ d3.select('svg').append("g")
                 .style("opacity", 0);	
         });
 
-
+d3.select('svg')
+.append("text")
+.attr("x", 180)             
+.attr("y", 30)
+.attr("text-anchor", "middle")  
+.style("font-size", "16px") 
+.style("text-decoration", "underline")  
+.text("Average City MPG vs Average Highway MPG");
+        
 d3.select('svg')
 .append("g")
 .attr("transform", "translate(50,50)")
 .call(d3.axisLeft(y).tickValues([10, 20, 50, 100]).tickFormat(d3.format("~s")))
+
 
 
 d3.select('svg')
@@ -92,6 +101,7 @@ d3.select('svg')
 .call(d3.axisBottom(x).tickValues([10, 20, 50, 100]).tickFormat(d3.format("~s")))
 
 }
+
 
   
 function changeColor(color){
